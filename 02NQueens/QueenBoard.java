@@ -22,30 +22,23 @@ public class QueenBoard {
 
     private boolean solveH(int col)
     {
-	for (int row = 0; row < board.length; row++) {
-	    if ( addQueen( row,col ))
-		return solveH( ++col );	    
+	for (int row = 0; row < board.length; row++)
+	{
+	    if (queenPlaceable( row,col )) {
+	    }
 	}
-	return false;
     }
 
-    private boolean addQueen(int row, int col)
+    private boolean queenPlaceable(int row, int col)
     {
-	if ( board[row][col] != 0 )
-	    return false;
-	
-	// state interferences	
-	for (int c = 0; c < board.length; c++)
-	    board[row][c]++;
 	for (int r = 0; r < board.length; r++)
-	    board[r][col]++;
+	    if ( board[r][col] != 0 )
+		return false;
+	for (int c = 0; c < board.length; c++)
+	    if ( board[row][c] != 0 )
+		return false;
 
-	int current = board.length * row + col;
-    
-
-	board[row][col] = -1;
-	return true;
-    }
+	int topLeft = boards.length * (row - col);
 
     public static void main(String[] args) {
 	QueenBoard q = new QueenBoard(4);
