@@ -22,9 +22,8 @@ public class QueenBoard {
      * if true: board is filled with the 
      * final configuration of the board after adding all n queens. Uses solveH.
      */
-    public boolean solve()
-    {
-	return solveH(0);
+    public void solve() {
+	solveH(0);
     }
 
     private boolean solveH(int col)
@@ -35,19 +34,14 @@ public class QueenBoard {
 	}
 	for (int row = 0; row < board.length; row++)
 	{
-	    System.out.println("row "+row+", col "+col);
 	    if (queenPlaceable( row,col )) {
-		System.out.println("queen is placeable.");
 		addQueen( row,col );
-		System.out.println(this);
-		if (solveH( ++col )) {
+		if (solveH(col+1)) {
 		    return true;
 		} else {
 		    removeQueen( row,col );
-		    System.out.println(this+"\nqueen removed.");
 		}
 	    }
-	    System.out.println();
 	}
 	return false;
     }
@@ -117,11 +111,36 @@ public class QueenBoard {
 	return o;
     }
 
+    public void countSolutions()
+    {
+	multiSolve(0);
+    }
+
+    public int getCount()
+    {
+	return solutionCount;
+    }
+
+    private void multiSolve(int col)
+    {
+	if ( col >= board.length ) {
+	    solutionCount++;
+	    return;
+	}
+	for (int row = 0; row < board.length; row++)
+	{
+	    if (queenPlaceable( row,col )) {
+		addQueen( row,col );
+	        multiSolve(col + 1);
+		removeQueen( row,col );
+	    }
+	}
+    }
+
     public static void main(String[] args) {
-	QueenBoard q = new QueenBoard( 4,true );
-	q.addQueen(0,0);
-	q.removeQueen(0,0);
-	System.out.println(q.solve());
+	QueenBoard q = new QueenBoard( 10,true );
+        q.countSolutions();
+	System.out.println(q.getCount());
     }
     
 	
