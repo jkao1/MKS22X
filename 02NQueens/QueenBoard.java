@@ -11,7 +11,7 @@ public class QueenBoard {
     public QueenBoard(int size, boolean dbo) {
 	board = new int[size][size];
 	DEBUG_MODE_ON = dbo;
-	solutionCount = 0;
+	solutionCount = -1;
     }
     
     /**
@@ -23,7 +23,8 @@ public class QueenBoard {
      * final configuration of the board after adding all n queens. Uses solveH.
      */
     public void solve() {
-	solveH(0);
+	if (board.length > 3)
+	    solveH(0);
     }
 
     private boolean solveH(int col)
@@ -113,10 +114,11 @@ public class QueenBoard {
 
     public void countSolutions()
     {
+	solutionCount = 0;
 	multiSolve(0);
     }
 
-    public int getCount()
+    public int getSolutionCount()
     {
 	return solutionCount;
     }
@@ -138,9 +140,20 @@ public class QueenBoard {
     }
 
     public static void main(String[] args) {
-	QueenBoard q = new QueenBoard( 10,true );
-        q.countSolutions();
-	System.out.println(q.getCount());
+       	System.out.println("TESTING SOLVE()");
+	for (int i = 0; i < 10; i++) {
+	    System.out.println("board with size "+i);
+	    QueenBoard q = new QueenBoard( i );
+	    q.solve();
+	    System.out.println(q);
+	}
+	System.out.println("\n\n\nTESTING SOLUTION COUNT");
+	for (int i = 0; i < 10; i++) {
+	    System.out.println("board with size "+i);
+	    QueenBoard q = new QueenBoard( i );
+	    q.countSolutions();
+	    System.out.println(q.getSolutionCount());
+	}
     }
     
 	
