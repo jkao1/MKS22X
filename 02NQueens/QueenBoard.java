@@ -123,11 +123,11 @@ public class QueenBoard {
 	return solutionCount;
     }
 
-    private void multiSolve(int col)
+    private boolean multiSolve(int col)
     {
 	if ( col >= board.length ) {
 	    solutionCount++;
-	    return;
+	    return false;
 	}
 	for (int row = 0; row < board.length; row++)
 	{
@@ -137,6 +137,7 @@ public class QueenBoard {
 		removeQueen( row,col );
 	    }
 	}
+	return false;
     }
 
     public static void main(String[] args) {
