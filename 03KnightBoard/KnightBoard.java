@@ -13,21 +13,6 @@ public class KnightBoard {
     {
         board = new int[ startingRows ][ startingCols ];
         opts = new int[ startingRows ][ startingCols ];
-        initiateOpts();
-    }
-
-    public void initiateOpts()
-    {
-        for (int r = 0; r < opts.length; r++) {
-            for (int c = 0; c < opts.length; c++) {
-                for (int[] moves : POSSIBLE) {
-                    int nextRow = r + moves[0];
-                    int nextCol = c + moves[1];
-                    if (nextRow >= 0 && nextRow < board.length && nextCol >= 0 && nextCol < board[0].length)
-                        opts[r][c]++;
-                }
-            }
-        }
     }
 
     public void solve() {
@@ -60,19 +45,6 @@ public class KnightBoard {
 
     private void addKnight(int row, int col, int level) {
         board[ row ][ col ] = level;
-        updateBoard( row,col );
-    }
-
-    private void updateBoard(int changedRow, int changedCol) {
-        for (int i = 0; i < POSSIBLE.length; i++) {
-            int nextRow = changedRow + POSSIBLE[i][0];
-            int nextCol = changedCol + POSSIBLE[i][1];
-            if ( nextRow >= 0 && nextRow < opts.length && nextCol >= 0 && nextCol < opts.length ) {
-                if (opts[ nextRow ][ nextCol ] > 0) {
-                    opts[ nextRow ][ nextCol ]--;
-                }
-            }
-        }
     }
 
     private void removeKnight(int row, int col) {
@@ -87,21 +59,6 @@ public class KnightBoard {
                     o += " " + board[r][c];
                 else
                     o += board[r][c];
-                o += " ";
-            }
-            o += "\n";
-        }
-        return o;
-    }
-
-    public String optsToString() {
-        String o = "";
-        for (int r = 0; r < opts.length; r++) {
-            for (int c = 0; c < opts[0].length; c++) {
-                if (opts[r][c] < 10)
-                    o += " " + opts[r][c];
-                else
-                    o += opts[r][c];
                 o += " ";
             }
             o += "\n";
