@@ -21,35 +21,46 @@ public class Maze {
 
     public Maze(String filename)
     {
-        try {
-            File file = new File( filename );
-            Scanner in = new Scanner( file );
-            int rows = 0, cols = in.nextLine().length();
-            while ( in.hasNextLine() ) {
-                if (rows == 0)
-                    cols = in.nextLine().length();
-                rows++;
-                in.nextLine(); // incrementer
-            }
-            maze = new char[ rows ][ cols ];
-            in = new Scanner( file );
-            int upTo = 0;
-            while ( in.hasNextLine() ) {
-                String line = in.nextLine();
-                char[] charArray = line.toCharArray();
-                maze[ upTo ] = charArray;
-                System.out.println(upTo + ":" + line);
-                upTo++;
-            }
-        } catch (Exception e) {}
+        try
+            {
+                File file = new File( filename );
+                Scanner in = new Scanner( file );
+                int rows = 0, cols = 0;
+                while ( in.hasNextLine() ) {
+                    if (rows == 0)
+                        cols = in.nextLine().length();
+                    else
+                        in.nextLine();
+                    rows++;
+                }
+                maze = new char[ rows ][ cols ];
+                in = new Scanner( file );
+                int upTo = 0;
+                while ( in.hasNextLine() ) {
+                    String line = in.nextLine();
+                    char[] charArray = line.toCharArray();
+                    maze[ upTo ] = charArray;
+                    upTo++;
+                }
+                String checkMe = toString();
+                if (checkMe.indexOf('S') == -1 || checkMe.indexOf('E') == -1)
+                    throw new IllegalArgumentException("Maze has no start or has no end");
+            } catch (Exception e) {
+            System.out.println("There was an exception in Maze(String filename).");
+        }
         animate = false;
     }
+
+    private void checkStartAndEnd() throws Exception {
+        String check = toString();
+        if (check.indexOf('S') == -1)
+            }
 
     public void setAnimate(boolean b) {
         animate = b;
     }
 
-    public void clearTerminal(){
+    public void clearTerminal() {
         //erase terminal, go to top left of screen.
         System.out.println("\033[2J\033[1;1H");
     }
@@ -57,12 +68,13 @@ public class Maze {
     /*Wrapper Solve Function
       Since the constructor exits when the file is not found or is missing an E or S, we can assume it exists.
     */
-    public boolean solve(){
-        int startr=-1,startc=-1;
+    public boolean solve()
+    {
+        int startR = -1, startC = -1;
 
-        //Initialize starting row and startint col with the location of the S. 
+        //Initialize starting row and startint col with the location of the S.
 
-        maze[startr][startc] = ' ';//erase the S, and start solving!
+        maze[ startR ][ startC ] = ' ';//erase the S, and start solving!
         return solve(startr,startc);
     }
 
