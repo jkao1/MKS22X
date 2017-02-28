@@ -4,6 +4,7 @@ public class Driver {
     {
 	Maze f;
 	f = new Maze("data1.dat");
+	f.solve();
 	System.out.println(f);
     }
 

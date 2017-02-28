@@ -3,6 +3,8 @@ import java.io.*;
 
 public class Maze {
 
+    private int[][] POSSIBLE = { { 1,1 }, {1,-1}, {-1,1}, {-1,-1} };
+    
     private char[][] maze;
     private boolean animate;
 
@@ -51,10 +53,13 @@ public class Maze {
         animate = false;
     }
 
-    private void checkStartAndEnd() throws Exception {
+    private void checkStartAndEnd() {
         String check = toString();
-        if (check.indexOf('S') == -1)
-            }
+        if (check.indexOf('S') == -1 || check.indexOf('E') == -1) {
+	    System.out.println("uhm no");
+	}
+    }
+            
 
     public void setAnimate(boolean b) {
         animate = b;
@@ -70,14 +75,27 @@ public class Maze {
     */
     public boolean solve()
     {
-        int startR = -1, startC = -1;
-
-        //Initialize starting row and startint col with the location of the S.
-
-        maze[ startR ][ startC ] = ' ';//erase the S, and start solving!
-        return solve(startr,startc);
+	int[] startLocation = initializeStart();
+        maze[ startLocation[0] ][ startLocation[1] ] = ' ';
+        return solve( startLocation[0],startLocation[1]);
     }
 
+    private int[] initializeStart()
+    {
+	for (int r = 0; r < maze.length; r++) {
+	    for (int c = 0; c < maze[r].length; c++) {
+		if (maze[r][c] == 'S') {
+		    int[] startLocation = new int[2];
+		    startLocation[0] = r;
+		    startLocation[1] = c;
+		    return startLocation;
+		}
+	    }
+	}
+	int[] wow = {-1,-1};
+	return wow;
+    }
+	
     /*
       Recursive Solve function:
 
@@ -98,12 +116,27 @@ public class Maze {
         if(animate){
             System.out.println("\033[2J\033[1;1H"+this);
             try {
-                wait(20);
+                wait(20);		
             } catch (Exception e) {}
         }
 
-        //COMPLETE SOLVE
+	if (maze[ row ][ col ] == 'E')
+	    return true;
 
+        if ( maze[ row ][ col ] == ' ' ) {
+	    maze[ row ][ col ] = '@';
+	    // go through all posibilities
+	    for (int[] move : POSSIBLE) {
+		int goRow = row + move[0];
+		int goCol = col + move[1];
+		if ( maze[ goRow ][ goCol ] == ' ' ) {
+		    if ( solve( goRow,goCol )) {
+			return true;
+		    }
+		}
+	    }
+	    maze[ row ][ col ] = '.';
+	}
         return false; //so it compiles
     }
 
