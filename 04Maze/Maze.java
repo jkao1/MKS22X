@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Maze {
 
-    private int[][] POSSIBLE = { { 1,1 }, {1,-1}, {-1,1}, {-1,-1} };
+    private int[][] POSSIBLE = { { 0,1 }, { 0,-1 }, { 1,0 }, { -1,0 } };
     
     private char[][] maze;
     private boolean animate;
@@ -27,12 +27,9 @@ public class Maze {
             {
                 File file = new File( filename );
                 Scanner in = new Scanner( file );
-                int rows = 0, cols = 0;
+                int rows = 1, cols = in.nextLine().length();
                 while ( in.hasNextLine() ) {
-                    if (rows == 0)
-                        cols = in.nextLine().length();
-                    else
-                        in.nextLine();
+		    in.nextLine();
                     rows++;
                 }
                 maze = new char[ rows ][ cols ];
@@ -48,8 +45,8 @@ public class Maze {
                 if (checkMe.indexOf('S') == -1 || checkMe.indexOf('E') == -1)
                     throw new IllegalArgumentException("Maze has no start or has no end");
             } catch (Exception e) {
-            System.out.println("There was an exception in Maze(String filename).");
-        }
+	    System.out.println("ohno");
+	}
         animate = false;
     }
 
@@ -115,21 +112,20 @@ public class Maze {
     private boolean solve(int row, int col){
         if(animate){
             System.out.println("\033[2J\033[1;1H"+this);
-            try {
-                wait(20);		
-            } catch (Exception e) {}
+	    
+            wait(20);
         }
 
-	if (maze[ row ][ col ] == 'E')
+	if ( maze[ row ][ col ] == 'E' )
 	    return true;
 
-        if ( maze[ row ][ col ] == ' ' ) {
+        if ( walkable( row,col )) {
 	    maze[ row ][ col ] = '@';
 	    // go through all posibilities
 	    for (int[] move : POSSIBLE) {
 		int goRow = row + move[0];
 		int goCol = col + move[1];
-		if ( maze[ goRow ][ goCol ] == ' ' ) {
+		if ( walkable( goRow,goCol )) {
 		    if ( solve( goRow,goCol )) {
 			return true;
 		    }
@@ -139,6 +135,17 @@ public class Maze {
 	}
         return false; //so it compiles
     }
+
+    private boolean walkable(int row, int col) {
+	return maze[ row ][ col ] == ' ' || maze[ row ][ col ] == 'S' || maze[ row ][ col ] == 'E';
+    }
+
+    private void wait(int millis){ //ADDED SORRY!
+         try {
+             Thread.sleep(millis);
+         }
+         catch (InterruptedException e) {}
+     }
 
     public String toString()
     {
