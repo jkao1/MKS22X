@@ -4,7 +4,6 @@ import java.io.*;
 public class Maze {
 
     private int[][] POSSIBLE = { { 0,1 }, { 0,-1 }, { 1,0 }, { -1,0 } };
-    
     private char[][] maze;
     private boolean animate;
 
@@ -29,7 +28,7 @@ public class Maze {
                 Scanner in = new Scanner( file );
                 int rows = 1, cols = in.nextLine().length();
                 while ( in.hasNextLine() ) {
-		    in.nextLine();
+                    in.nextLine();
                     rows++;
                 }
                 maze = new char[ rows ][ cols ];
@@ -44,19 +43,20 @@ public class Maze {
                 String checkMe = toString();
                 if (checkMe.indexOf('S') == -1 || checkMe.indexOf('E') == -1)
                     throw new IllegalArgumentException("Maze has no start or has no end");
-            } catch (Exception e) {
-	    System.out.println("ohno");
-	}
+            }
+        catch (Exception e) {
+            System.out.println("File error.");
+            System.exit(0);
+        }
         animate = false;
     }
 
     private void checkStartAndEnd() {
         String check = toString();
         if (check.indexOf('S') == -1 || check.indexOf('E') == -1) {
-	    System.out.println("uhm no");
-	}
+            System.out.println("uhm no");
+        }
     }
-            
 
     public void setAnimate(boolean b) {
         animate = b;
@@ -72,27 +72,27 @@ public class Maze {
     */
     public boolean solve()
     {
-	int[] startLocation = initializeStart();
+        int[] startLocation = initializeStart();
         maze[ startLocation[0] ][ startLocation[1] ] = ' ';
         return solve( startLocation[0],startLocation[1]);
     }
 
     private int[] initializeStart()
     {
-	for (int r = 0; r < maze.length; r++) {
-	    for (int c = 0; c < maze[r].length; c++) {
-		if (maze[r][c] == 'S') {
-		    int[] startLocation = new int[2];
-		    startLocation[0] = r;
-		    startLocation[1] = c;
-		    return startLocation;
-		}
-	    }
-	}
-	int[] wow = {-1,-1};
-	return wow;
+        for (int r = 0; r < maze.length; r++) {
+            for (int c = 0; c < maze[r].length; c++) {
+                if (maze[r][c] == 'S') {
+                    int[] startLocation = new int[2];
+                    startLocation[0] = r;
+                    startLocation[1] = c;
+                    return startLocation;
+                }
+            }
+        }
+        int[] wow = {-1,-1};
+        return wow;
     }
-	
+
     /*
       Recursive Solve function:
 
@@ -110,42 +110,41 @@ public class Maze {
       All visited spots that are part of the solution are changed to '@'
     */
     private boolean solve(int row, int col){
-        if(animate){
+        if (animate) {
             System.out.println("\033[2J\033[1;1H"+this);
-	    
             wait(20);
         }
 
-	if ( maze[ row ][ col ] == 'E' )
-	    return true;
+        if ( maze[ row ][ col ] == 'E' )
+            return true;
 
         if ( walkable( row,col )) {
-	    maze[ row ][ col ] = '@';
-	    // go through all posibilities
-	    for (int[] move : POSSIBLE) {
-		int goRow = row + move[0];
-		int goCol = col + move[1];
-		if ( walkable( goRow,goCol )) {
-		    if ( solve( goRow,goCol )) {
-			return true;
-		    }
-		}
-	    }
-	    maze[ row ][ col ] = '.';
-	}
+            maze[ row ][ col ] = '@';
+            // go through all posibilities
+            for (int[] move : POSSIBLE) {
+                int goRow = row + move[0];
+                int goCol = col + move[1];
+                if ( walkable( goRow,goCol )) {
+                    if ( solve( goRow,goCol )) {
+                        return true;
+                    }
+                }
+            }
+            maze[ row ][ col ] = '.';
+        }
         return false; //so it compiles
     }
 
     private boolean walkable(int row, int col) {
-	return maze[ row ][ col ] == ' ' || maze[ row ][ col ] == 'S' || maze[ row ][ col ] == 'E';
+        return maze[ row ][ col ] == ' ' || maze[ row ][ col ] == 'S' || maze[ row ][ col ] == 'E';
     }
 
     private void wait(int millis){ //ADDED SORRY!
-         try {
-             Thread.sleep(millis);
-         }
-         catch (InterruptedException e) {}
-     }
+        try {
+            Thread.sleep(millis);
+        }
+        catch (InterruptedException e) {}
+    }
 
     public String toString()
     {
