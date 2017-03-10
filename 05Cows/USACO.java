@@ -5,92 +5,66 @@ public class USACO {
 
     private int[][] lake;
     private ArrayList<int[]> instructions;
-    
+
     public int bronze(String filename) {
-	
-	try {
-	    File f = new File( filename );
-	    Scanner in = new Scanner( f );
-	    String[] firstLine = in.nextLine().split(' ');
-	    int rows = Integer.parseInt( firstLine[0] );
-	    int cols = Integer.parseInt( firstLine[1] );
-	    int e= Integer.parseInt(firstLine[2])
-		lake = new int[ rows ][ cols ];
-	    for (int i = 0; i < rows; i++) {
-		String[] numbers = in.nextLine().split(' ');
-		for (int j= 0;j < cols; j++) {
-		    lake[ i ][ j ] = Integer.parseInt( numbers[j] );
-		}
-	    }
-	    instructions = new ArrayList<>();
-	    int upTo = 0;
-	    while ( in.hasNextLine() ) {
-		String line = in.nextLine().split(' ');
-		for (int i = 0; i < 3; i++) {
-		    instructions.get(upTo)[i] = line[i];
-		}
-		upTo++;
-	    }
 
-	    bronzeH();
-	}
-	catch (Exception e) {System.out.println("Invalid file");}
-    
-	
+        Scanner in = null;
+        try {
+            File f = new File( filename );
+            Scanner in = new Scanner( f );
+        } catch (Exception e) {
+            System.out.println("File not found.");
+            System.exit(0);
+        }
+
+        Scanner header = in.nextLine();
+        int rows = header.nextInt();
+        int cols = header.nextInt();
+        int elevation = header.nextInt();
+
+        lake = new int[ rows ][ cols ];
+        for (int r = 0; r < rows; r++) {
+            Scanner row = in.nextLine();
+            for (int c = 0; c < cols; c++) {
+                lake[r][c] = row.nextInt();
+            }
+        }
+
+        while (in.hasNextLine()) {
+            Scanner instruction = in.nextLine();
+            int r = instruction.nextInt();
+            int c = instruction.nextInt();
+            int stomp = instruction.nextInt();
+            int stompHeight = findAndStompMax( r,c,stomp );
+        }
     }
 
-    public int bronzeH () 
-    {
-	for (int[] currentInstructions : instructions){
-	    int row = currentInstructions[0];
-	    int col = currentInstructions[1];
-	    int el = currentInstructions[2];
-	    int max= findMax( row,col,el );
-	    for(int a=row; a<row+3; a++){
-		for(int b=col; b<col+3; b++){
-		    if(lake[a][b]>max) {
-			lake[a][b] = max;
-		    }
-		}	    
-	    }
-	}
-	return findVolume();
+    public int findAndStompMax(int row, int col, int stomp){
+        int max = lake[row][col], max_r = row, max_c = col;
+        for (int r = row; r < row + 3; r++) {
+            for (int c = col; c < col + 3; c++) {
+                if (lake[r][c] > max) {
+                    max = lake[r][c];
+                    max_r = r;
+                    max_c = c;
+                }
+            }
+        }
+        lake[max_r][max_c] -= stomp;
+        return max - stomp;
     }
 
-    public int findMax(int r, int c, int e){
-	int max = 0, row = 0, col = 0;
-	for(int a=r; a<r+3; a++){
-	    for(int b=c; b<c+3; b++){
-		if(lake[a][b]>max) {
-		    row = a;
-		    col = b;
-		    max=lake[a][b];	  
-		}
-	    }	    
-	}
-	lake[ row ][ col ] -= e;
-	return max - e;
-    }
-		    
     public int findVolume(int el)
     {
-	int o = 0;
-	for (int r = 0; r < lake.length; r++) {
-	    for (int c = 0; c < lake[r].length; c++) {
-		int hi = max - lake[r][c];
-		if (hi > 0) {
-		    o += hi;
-		}
-	    }
-	}
-	return o * 66 * 66;
+        int o = 0;
+        for (int r = 0; r < lake.length; r++) {
+            for (int c = 0; c < lake[r].length; c++) {
+                int hi = max - lake[r][c];
+                if (hi > 0) {
+                    o += hi;
+                }
+            }
+        }
+        return o * 66 * 66;
     }
-	    
-	    
-	    
 }
-
-
-
-	
-	
