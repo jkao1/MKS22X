@@ -5,6 +5,6 @@ public class Driver {
 
     public static void main(String[] args) {
         USACO u = new USACO();
-        System.out.println( u.bronze( "makelake.in" ) );
+        System.out.println(u.silver( "ctravel.in" ));
     }
 }
