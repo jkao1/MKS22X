@@ -1,19 +1,24 @@
 public class QuickSelect {
 
-    public static void kthSmallest(int[] ary, int k, int start, int end) {
-        int wall = partition( ary, 0, ary.length );
-        if (wall - start == k - 1) { // if wall, where the original array was, is = to k
-            return ary[wall];
-        } else if (wall - start > k - 1) {
-            return kthSmallest(ary, k, wall-1, )
-        }
+    public static void quickselect(int[] ary, int k) {
+        System.out.println(quickselectH( ary, k, 0, ary.length ));
     }
 
-    public static int partition(int[] ary, int start, int end)
+    public static int quickselectH(int[] ary, int k, int start, int end)
     {
-        printAry( ary );
+	int wall = part( ary, 0, ary.length );
+        if ( wall == k ) { // if wall, where the original array was, is = to k
+            return ary[wall];
+        } else if ( wall > k ) {
+            return quickselectH( ary, k, wall-1, end );
+        }
+	return quickselectH( ary, k, start, wall-1 );
+
+    }
+
+    public static int part(int[] ary, int start, int end)
+    {
         int randomIndex = (int) ( Math.random() * ary.length );
-        System.out.println(randomIndex);
         int pivot = ary[ randomIndex ];
         swap( randomIndex, end-1, ary );
 
@@ -26,7 +31,6 @@ public class QuickSelect {
                 }
             }
         swap( wall, end-1, ary );
-        printAry( ary );
         return wall;
     }
 
@@ -45,7 +49,9 @@ public class QuickSelect {
     }
 
     public static void main(String[] args) {
-        int[] ary = { 4, 6, 3, 9 ,8 ,1, 5, 2, 0, 7 };
-        kthSmallest(ary, 2, 0, ary.length);
+        int[]ary = { 2, 10, 15, 23, 0,  5};
+        for (int i = 0; i < ary.length; i++) {
+	    quickselect(ary,i);
+	}
     }
 }
