@@ -1,7 +1,12 @@
 public class QuickSelect {
 
-    public static void kthSmallest(int[] ary, int k) {
-        partition( ary, 0, ary.length );
+    public static void kthSmallest(int[] ary, int k, int start, int end) {
+        int wall = partition( ary, 0, ary.length );
+        if (wall - start == k - 1) { // if wall, where the original array was, is = to k
+            return ary[wall];
+        } else if (wall - start > k - 1) {
+            return kthSmallest(ary, k, wall-1, )
+        }
     }
 
     public static int partition(int[] ary, int start, int end)
@@ -22,7 +27,7 @@ public class QuickSelect {
             }
         swap( wall, end-1, ary );
         printAry( ary );
-        return 0;
+        return wall;
     }
 
     private static void swap(int x, int y, int[] ary) {
@@ -41,6 +46,6 @@ public class QuickSelect {
 
     public static void main(String[] args) {
         int[] ary = { 4, 6, 3, 9 ,8 ,1, 5, 2, 0, 7 };
-        kthSmallest(ary, 0);
+        kthSmallest(ary, 2, 0, ary.length);
     }
 }
