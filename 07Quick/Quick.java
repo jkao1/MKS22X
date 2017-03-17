@@ -1,22 +1,26 @@
 public class Quick {
 
-    public static int quickselect(int[] ary, int k) {
-	int wall = part( ary, 0, ary.length-1 );
-	while (wall != k) {
-	    if (wall > k) {
-		wall = part( ary, wall, end );
-	    } else {
-		wall = part( ary, start, wall );
-	    }
-	}
-	return ary[k];
+    public static void quickselect(int[] ary, int k) {
+        System.out.println(quickselectH( ary, k, 0, ary.length ));
+    }
+
+    public static int quickselectH(int[] ary, int k, int start, int end)
+    {
+	int wall = part( ary, 0, ary.length );
+        if ( wall == k ) { // if wall, where the original array was, is = to k
+            return ary[wall];
+        } else if ( wall > k ) {
+            return quickselectH( ary, k, wall-1, end );
+        }
+	return quickselectH( ary, k, start, wall-1 );
+
     }
 
     public static int part(int[] ary, int start, int end)
     {
-        int randomIndex = (int) ( Math.random() * (end - start) + start);
+        int randomIndex = (int) ( Math.random() * ary.length );
         int pivot = ary[ randomIndex ];
-        swap( randomIndex, end, ary );
+        swap( randomIndex, end-1, ary );
 
         int wall = start;
         for (int i = start; i < end - 1; i++) // end - 1 makes room for the pivot
@@ -26,7 +30,7 @@ public class Quick {
                     wall++;
                 }
             }
-        swap( wall, end, ary );
+        swap( wall, end-1, ary );
         return wall;
     }
 
@@ -45,8 +49,8 @@ public class Quick {
     }
 
     public static void main(String[] args) {
-	int[] ary = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-	for (int i = 0; i < 10; i++){
+        int[]ary = { 2, 10, 15, 23, 0,  5};
+        for (int i = 0; i < ary.length; i++) {
 	    quickselect(ary,i);
 	}
     }
