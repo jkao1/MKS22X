@@ -1,37 +1,38 @@
 public class Quick {
 
-    public static void quickselect(int[] ary, int k) {
-        System.out.println(quickselectH( ary, k, 0, ary.length ));
-    }
-
-    public static int quickselectH(int[] ary, int k, int start, int end)
+    public static void quickselect(int[] ary, int k)
     {
-	int wall = part( ary, 0, ary.length );
-        if ( wall == k ) { // if wall, where the original array was, is = to k
-            return ary[wall];
-        } else if ( wall > k ) {
-            return quickselectH( ary, k, wall-1, end );
-        }
-	return quickselectH( ary, k, start, wall-1 );
-
-    }
-
-    public static int part(int[] ary, int start, int end)
-    {
-        int randomIndex = (int) ( Math.random() * ary.length );
-        int pivot = ary[ randomIndex ];
-        swap( randomIndex, end-1, ary );
-
-        int wall = start;
-        for (int i = start; i < end - 1; i++) // end - 1 makes room for the pivot
-            {
-                if ( ary[i] < ary[end-1] ) {
-                    swap( wall, i, ary );
-                    wall++;
-                }
+        int left = 0, right = ary.length - 1;
+        int wall = part( ary, left, right );
+        while (wall != k) {
+            if ( wall > k ) {
+                wall = part( ary, wall+1, right );
+            } else {
+                wall = part( ary, left, wall-1 );
             }
-        swap( wall, end-1, ary );
-        return wall;
+        }
+
+    }
+
+    public static int part(int[] ary, int left, int right)
+    {
+        print(ary);
+        int randomIndex = left + (int) ( Math.random() * ( right - left + 1 ));
+        System.out.println("random index: " + randomIndex);
+        int pivot = ary[ randomIndex ];
+        swap( randomIndex, left, ary );
+        int wall = left + 1;
+        for (int i = left + 1; i <= right; i++) {
+            coolPrint(ary,wall);
+            if ( ary[i] < pivot ) {
+                swap( wall, i, ary );
+                wall++;
+            }
+        }
+        swap( wall-1, left , ary );
+        print(ary);
+        System.out.println(wall-1);
+        return wall-1;
     }
 
     private static void swap(int x, int y, int[] ary) {
@@ -40,7 +41,7 @@ public class Quick {
         ary[y] = temp;
     }
 
-    private static void printAry(int[] ary) {
+    private static void print(int[] ary) {
         String o = "";
         for (int i : ary) {
             o += i + " ";
@@ -48,10 +49,30 @@ public class Quick {
         System.out.println(o);
     }
 
-    public static void main(String[] args) {
-        int[]ary = { 2, 10, 15, 23, 0,  5};
+    private static void coolPrint(int[] ary, int wall) {
+        String o = "";
         for (int i = 0; i < ary.length; i++) {
-	    quickselect(ary,i);
-	}
+            if (i == wall)
+                o += "| " + ary[i] + " ";
+            else
+                o += ary[i] + " ";
+        }
+        System.out.println(o);
+    }
+
+    public static void main(String[] args) {
+        int[] ary = { 5, 15, 12, 18 ,5, 0, 13, 3, 20 ,19 };
+        part(ary,0,ary.length-1);
+        /*
+        System.out.println("random array testing-----");
+        for (int i = 0; i < 2; i++) {
+            System.out.println("array #" + i);
+            int[] ary = new int[10];
+            for (int j = 0; j < 10; j++) {
+                int randomNum = (int) ( Math.random() * 20 );
+                ary[j] = randomNum;
+            }
+            part( ary, 0, ary.length-1);
+            }*/
     }
 }
