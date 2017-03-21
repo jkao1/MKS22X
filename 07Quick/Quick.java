@@ -2,37 +2,29 @@ public class Quick {
 
     public static void quickselect(int[] ary, int k)
     {
-        int left = 0, right = ary.length - 1;
-        int wall = part( ary, left, right );
-        while (wall != k) {
-            if ( wall > k ) {
-                wall = part( ary, wall+1, right );
-            } else {
-                wall = part( ary, left, wall-1 );
-            }
-        }
-
+        quickselectH(ary, k, 0, ary.length );
     }
 
-    public static int part(int[] ary, int left, int right)
+    public static int quickselectH(int[] ary, int k, int left, int right)
     {
-        print(ary);
         int randomIndex = left + (int) ( Math.random() * ( right - left + 1 ));
-        System.out.println("random index: " + randomIndex);
-        int pivot = ary[ randomIndex ];
-        swap( randomIndex, left, ary );
-        int wall = left + 1;
-        for (int i = left + 1; i <= right; i++) {
-            coolPrint(ary,wall);
-            if ( ary[i] < pivot ) {
-                swap( wall, i, ary );
-                wall++;
+        swap(randomIndex, left, ary);
+        int v = ary[left];
+
+        int i = left + 1, lt = left, gt = right - 1;
+
+        while (i <= gt) {
+            if (ary[i] < v) {
+                swap(i, lt, ary);
+                i++;
+                lt++;
+            } else if (ary[i] > v) {
+                swap(i, gt, ary);
+                gt--;
+            } else {
+                i++;
             }
         }
-        swap( wall-1, left , ary );
-        print(ary);
-        System.out.println(wall-1);
-        return wall-1;
     }
 
     private static void swap(int x, int y, int[] ary) {
