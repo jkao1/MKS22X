@@ -17,12 +17,12 @@ public class Quiz2Redux {
 
     private static void help(ArrayList<String> words, String s, int start, String built)
     {
-        if (start == s.length()) {
+        if (start == s.length() && !(words.contains( built ))) {
             words.add(built);
-            return;
+        } else {
+            help( words, s, start+1, built + s.charAt(start));
+            help( words, s, start+1, built);
         }
-
-        help( words, s, start+1, s.substring(start,start+1) + built );
-        help( words, s, start+1, built);
     }
+
 }
