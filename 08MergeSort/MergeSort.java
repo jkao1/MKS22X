@@ -1,7 +1,26 @@
 public class MergeSort {
 
+    public static void mergesort(int[] ary)
+    {
+	int[] left = new int[ary.length / 2];
+	int[] right = new int[ary.length - left.length];
+	for (int i = 0; i < ary.length; i++) {
+	    if (i < left.length) {
+		left[i] = ary[i];
+	    } else {
+		right[i - left.length] = ary[i];
+	    }
+	}
+	if (ary.length == 1) {
+	} else {
+	    mergesort(left);
+	    mergesort(right);
 
-    public static void merge(int[] aryA, int[] aryB, int[] destination)
+	    merge(left, right, ary);
+	}
+    }
+
+    private static void merge(int[] aryA, int[] aryB, int[] destination)
     {	
 	int a = 0, b = 0;
 	while (a < aryA.length && b < aryB.length) {
@@ -32,9 +51,10 @@ public class MergeSort {
     }
 
     public static void main(String[] args) {
-	int[] a = { 1, 3, 5, 7, 9 };
+	int[] a = { 3,123,34,23,234,2341,123,12,3 };
 	int[] b = { 0, 2, 4, 6, 8 };
 	int[] destination = new int[a.length + b.length];
-	merge(a, b, destination);
+	mergesort(a);
+	print(a);
     }
 }
