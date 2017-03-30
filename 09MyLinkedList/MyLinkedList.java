@@ -26,7 +26,7 @@ public class MyLinkedList {
 	}
     }
 
-    public boolean add(int index, int value)
+    public void add(int index, int value)
     {
 	if (index < 0 || index >= size()) {
 	    throw new IndexOutOfBoundsException();
@@ -38,7 +38,7 @@ public class MyLinkedList {
 	    countdown--;
 	}
 	LNode temp = current.next;
-	temp.next = new LNode(value, temp);
+	current.next = new LNode(value, temp);	
     }
 
     public int get(int index)
@@ -55,9 +55,55 @@ public class MyLinkedList {
 	return current.value;
     }
 
+    public int remove(int index)
+    {
+	if (index < 0 || index >= size()) {
+	    throw new IndexOutOfBoundsException();
+	}
+	LNode current = start;
+	int count = 0;
+	while (count < index - 1) {
+	    current = current.next;
+	    count++;
+	}
+	int output = current.next.value;
+	current.next = current.next.next;
+	return output;
+    }
+
+    public int set(int index, int value)
+    {
+	if (index < 0 || index >= size()) {
+	    throw new IndexOutOfBoundsException();
+	}
+	LNode current = start;
+	int count = 0;
+	while (count < index) {
+	    current = current.next;
+	    count++;
+	}
+	int output = current.value;
+	current.value = value;
+	return output;
+    }
+
+    public int indexOf(int value)
+    {
+	LNode current = start;
+	int count = 0;
+	while (count < size) {
+	    if (current.value == value) {
+		return count;
+	    }
+	    current = current.next;
+	    count++;
+	}
+	return -1;
+    }
+
     public int size()
     {
-	String output = 0;
+	int output = 0;;
 	LNode current = start;
 	while (current != null) {
 	    output++;
