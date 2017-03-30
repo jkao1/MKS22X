@@ -26,6 +26,21 @@ public class MyLinkedList {
 	}
     }
 
+    public boolean add(int index, int value)
+    {
+	if (index < 0 || index >= size()) {
+	    throw new IndexOutOfBoundsException();
+	}
+	LNode current = start;
+	int countdown = index;
+	while (countdown > 0) {
+	    current = current.next;
+	    countdown--;
+	}
+	LNode temp = current.next;
+	temp.next = new LNode(value, temp);
+    }
+
     public int get(int index)
     {
 	if (index < 0 || index >= size()) {
