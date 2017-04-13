@@ -203,4 +203,37 @@ public class MyLinkedList implements Iterable<Integer>{
             return "(" + prev + ")" + value + "(" + next + ")";
         }
     }
+
+    private class MyLinkedListIterator implements Iterator<Integer> {
+
+        private MyLinkedList mll;
+        private LNode currentNode;
+
+        public MyLinkedListIterator(MyLinkedList mll) {
+            this.mll = mll;
+            currentNode = head;
+        }
+
+        public boolean hasNext()
+        {
+            return currentNode != null;
+        }
+
+        public Integer next()
+        {
+            if (hasNext()) {
+                int output = currentNode.value;
+                currentNode = currentNode.next;
+                return output;
+            } else {
+                throw new NoSuchElementException();
+            }
+        }
+
+        public void remove()
+        {
+            throw new UnsupportedOperationException();
+        }
+
+    }
 }
