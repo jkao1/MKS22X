@@ -46,7 +46,7 @@ public class Driver{
 	    int[] test= randomArray(size, 10);
 	    int[] sorted= test.clone();
 	    Arrays.sort(sorted);
-	    Merge.mergesort(test);
+Mergesort.mergesort(test);
 	    if(Arrays.equals(test, sorted)){
 		System.out.println("GOOD");
 	    }else{
