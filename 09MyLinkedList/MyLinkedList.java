@@ -1,45 +1,90 @@
-public class MyLinkedList {
+import java.util.*;
+
+public class MyLinkedList implements Iterable<Integer>{
 
     private LNode head, tail;
     private int size;
 
     public MyLinkedList() {
-	head = null;
-	tail = null;
-	size = 0;
+        head = null;
+        tail = null;
+        size = 0;
     }
 
     public boolean add(int value)
-    {	
-	add( size(), value );
-	return true;
+    {
+        addAfter(tail, new LNode(value));
+        return true;
     }
 
-    private LNode getNthNode(int index)
+    private void addAfter(LNode location, LNode toBeAdded)
     {
-	if (index < 0 || index >= size()) {
-	    throw new IndexOutOfBoundsException();
-	}
-	LNode current = head;
-	int upTo = 0;
-	while (upTo < index) {	    
-	    current = current.next;
-	    upTo++;
-	}
-	return current;
+        if (size == 0) {
+            head = toBeAdded;
+            tail = toBeAdded;
+        } else if (location.next == null) {
+            toBeAdded.prev = location;
+            location.next = toBeAdded;
+            tail = location.next;
+        } else {
+            toBeAdded.prev = location;
+            toBeAdded.next = location.next;
+            location.next = toBeAdded;
+            toBeAdded.next.prev = toBeAdded;
+        }
+        size++;
     }
 
-    public boolean add(int index, int value)
+    public void add(int index, int value)
     {
-        LNode tBA = new 
+        if (index == size) {
+            add(value);
+        } else {
+            addBefore(getNthNode(index), new LNode(value));
+        }
     }
-	    
-    public void addAfter(LNode location, LNode tBA)
+
+    public void addBefore(LNode location, LNode toBeAdded)
     {
-	tBA.next = location.next;
-	tBA.prev = location;
-	location.next = tBA;
-	tBA.next.prev = tBA;
+        if (size == 0) {
+            head = toBeAdded;
+            tail = toBeAdded;
+        } else if (location.prev == null) {
+            toBeAdded.next = location;
+            location.prev = toBeAdded;
+            head = location.prev;
+        } else {
+            toBeAdded.next = location;
+            toBeAdded.prev = location.prev;
+            location.prev = toBeAdded;
+            toBeAdded.prev.next = toBeAdded;
+        }
+        size++;
+    }
+
+    public int remove(int index)
+    {
+        LNode target = getNthNode(index);
+        remove(target);
+        return target.value;
+    }
+
+    private void remove(LNode target)
+    {
+        if (target.prev == null && target.next == null) {
+            head = null;
+            tail = null;
+        } else if (target.prev == null) {
+            target.next.prev = null;
+            head = target.next;
+        } else if (target.next == null) {
+            target.prev.next = null;
+            tail = target.prev;
+        } else {
+            target.prev.next = target.next;
+            target.next.prev = target.prev;
+        }
+        size--;
     }
 
     public int get(int index)
@@ -47,59 +92,115 @@ public class MyLinkedList {
         return getNthNode(index).value;
     }
 
+    public int set(int index, int value)
+    {
+        LNode target = getNthNode(index);
+        int output = target.value;
+        target.value = value;
+        return output;
+    }
+
+    public int indexOf(int value)
+    {
+        LNode currentNode = head;
+        int index = 0;
+        while (index < size) {
+            if (currentNode.value == value) {
+                return index;
+            } else {
+                currentNode = currentNode.next;
+                index++;
+            }
+        }
+        return -1;
+    }
+
+    private LNode getNthNode(int index)
+    {
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        LNode currentNode;
+        int upTo;
+        if (index > size / 2) {
+            currentNode = tail;
+            upTo = size - 1;
+            while (upTo > index) {
+                currentNode = currentNode.prev;
+                upTo--;
+            }
+        } else {
+            currentNode = head;
+            upTo = 0;
+            while (upTo < index) {
+                currentNode = currentNode.next;
+                upTo++;
+            }
+        }
+        return currentNode;
+    }
+
     public int size()
     {
-	int output = 0;;
-	LNode current = head;
-	while (current != null) {
-	    output++;
-	    current = current.next;
-	}
-	return output;
-    }	    
+        return size;
+    }
 
     public String toString()
     {
-	String output = "[";
-	LNode current = head;
-	while (current != null) {
-	    output += current.value + ", ";
-	    current = current.next;
-	}
-	return output.substring(0, output.length() - 2) + "]";
+        String output = "[";
+        LNode current = head;
+        while (current != null) {
+            if (current != head) {
+                output += ", ";
+            }
+            output += current.value;
+            current = current.next;
+        }
+        return output + "]";
     }
 
     public String toString(boolean DEBUG)
     {
-	LNode current = head;
-	String output = "[(null) " + current.value + " (" + current.next.value + "), ";
-	current = current.next;
-	int tt = 0;
-	while (current.next != null) {
-	    System.out.println(current.prev.value);
-	    System.out.println(output);
-	    output += "(" + current.prev.value + ") " + current.value + " (" + current.next.value + "), ";
-	    current = current.next;
-	    tt++;
-	}
-	return output + "(" + current.prev.value + "(null)";
+        String output = "[";
+        LNode current = head;
+        while (current != null) {
+            if (current != head) {
+                output += ", ";
+            }
+            output += current.toString(true);
+            current = current.next;
+        }
+        return output + "]";
+    }
+
+    public Iterator<Integer> iterator()
+    {
+        return new MyLinkedListIterator(this);
     }
 
     private class LNode {
-	
-	private LNode prev, next;      
-	private int value;
 
-	public LNode(int value) {
-	    this.value = value;
-	    prev = null;
-	    next = null;
-	}
+        private LNode prev, next;
+        private int value;
 
-	public LNode(int value, LNode prev, LNode next) {
-	    this.value = value;
-	    this.prev = prev;
-	    this.next = next;
-	}
+        public LNode(int value) {
+            this.value = value;
+            prev = null;
+            next = null;
+        }
+
+        public LNode(int value, LNode prev, LNode next) {
+            this.value = value;
+            this.prev = prev;
+            this.next = next;
+        }
+
+        public String toString() {
+            return "" + value;
+        }
+
+        public String toString(boolean DEBUG) {
+            return "(" + prev + ")" + value + "(" + next + ")";
+        }
     }
 }
