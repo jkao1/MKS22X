@@ -99,6 +99,8 @@ public class MyDeque {
 	    i++;
 	}
 	ary = biggerAry;
+	front = 0;
+	back = size - 1;
     }
 
     public String toString()
@@ -117,7 +119,7 @@ public class MyDeque {
     public static void main(String[] args) {
 	MyDeque d = new MyDeque();
         for (int i = 0; i < 11; i++) {
-	    d.addLast("i");
+	    d.addLast(String.valueOf((char) ('a' + i)));
 System.out.println(d);
 	}
 	
