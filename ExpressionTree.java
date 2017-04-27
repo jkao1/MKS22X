@@ -25,7 +25,7 @@ public class ExpressionTree {
 	} else if (op == '%') {
 	    return a % b;
 	} else {
-	    return -1.0;
+	    return 0.0;
 	}
     }
   
@@ -67,8 +67,7 @@ public class ExpressionTree {
 	} else {
 	    return "toStringPrefix() ERROR";
 	}
-    }
-  
+    }  
 
     private char op;
     private double value;
@@ -81,13 +80,12 @@ public class ExpressionTree {
 	this.value = value;
 	op = '~';
     }
+
     public ExpressionTree(char op,ExpressionTree l, ExpressionTree r){
 	this.op = op;
 	left = l;
 	right = r;
-    }
-  
-  
+    }  
   
     public char getOp(){
 	return op;
@@ -97,10 +95,12 @@ public class ExpressionTree {
     private double getValue(){
 	return value;
     }
+
     /* accessor method for left, precondition is that isOp() is true.*/
     private ExpressionTree getLeft(){
 	return left;
     }
+
     /* accessor method for right, precondition is that isOp() is true.*/
     private ExpressionTree getRight(){
 	return right;
@@ -109,17 +109,17 @@ public class ExpressionTree {
     private boolean isOp(){
 	return hasChildren();
     }
+
     private boolean isValue(){
 	return !hasChildren();
     }
   
     private boolean hasChildren(){
 	return left != null && right != null;
-    }
-  
+    }  
   
     public static void main(String[] args){
-	//ugly main sorry!
+
 	ExpressionTree a = new ExpressionTree(4.0);
 	ExpressionTree b = new ExpressionTree(2.0);
 
