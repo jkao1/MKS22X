@@ -2,11 +2,11 @@ public class MyHeap {
 
     private static int O_CONST;
 
-    private String[] ary;
+    private Integer[] ary;
     private int size;
 
     public MyHeap() {
-        ary = new String[10];
+        ary = new Integer[10];
         size = 1;
     }
 
@@ -19,12 +19,12 @@ public class MyHeap {
         }
     }
 
-    public void add(String s)
+    public void add(Integer i)
     {
         if (size == ary.length) {
             resize();
         }
-        ary[size] = s;
+        ary[size] = i;
         pushUp();
         size++;
     }
@@ -40,16 +40,16 @@ public class MyHeap {
 
     private void resize()
     {
-        String[] biggerAry = new String[ary.length * 2];
+        Integer[] biggerAry = new Integer[ary.length * 2];
         for (int i = 0; i < ary.length; i++) {
             biggerAry[i] = ary[i];
         }
         ary = biggerAry;
     }
 
-    public String remove()
+    public Integer remove()
     {
-        String output = ary[1];
+        Integer output = ary[1];
         ary[1] = ary[size - 1];
         pushDown();
         size--;
@@ -87,7 +87,7 @@ public class MyHeap {
 
     private void swap(int a, int b)
     {
-        String temp = ary[a];
+        Integer temp = ary[a];
         ary[a] = ary[b];
         ary[b] = temp;
     }
@@ -107,11 +107,11 @@ public class MyHeap {
     public static void main(String[] args)
     {
         MyHeap h = new MyHeap(true);
-        String[] test = { "a", "b", "c", "d", "e", "f", "g", "h", "i",  "g", "h", "i",  "g", "h", "i",  "g", "h", "i",  "g", "h", "i",  "g", "h", "i",  "g", "h", "i", };
-        for (String s : test) {
-            h.add(s);
-            System.out.println(s);
-        }for (String s : test) {
+        int[] test = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+        for (int i : test) {
+            h.add(i);
+            System.out.println(h);
+        }for (int i : test) {
             h.remove();
             System.out.println(h);
         }
