@@ -85,6 +85,11 @@ public class MyHeap {
         }
     }
 
+    public String peek()
+    {
+        return ary[1];
+    }
+
     private void swap(int a, int b)
     {
         String temp = ary[a];
