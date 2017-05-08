@@ -8,6 +8,7 @@ public class MyHeap {
     public MyHeap() {
         ary = new Integer[10];
         size = 1;
+	O_CONST = 1;
     }
 
     public MyHeap(boolean isMax) {
@@ -19,7 +20,7 @@ public class MyHeap {
         }
     }
 
-    public void add(Integer i)
+    public void add(int i)
     {
         if (size == ary.length) {
             resize();
@@ -92,6 +93,16 @@ public class MyHeap {
         ary[b] = temp;
     }
 
+    public Integer peek()
+    {
+	return ary[1];
+    }
+
+    public int size()
+    {
+	return size - 1;
+    }
+
     public String toString()
     {
         String output = "[";
@@ -101,18 +112,23 @@ public class MyHeap {
         if (size > 1) {
             output = output.substring(0, output.length() - 2);
         }
-        return output + "]";
+        return output + "] " + O_CONST;
     }
 
     public static void main(String[] args)
     {
-        MyHeap h = new MyHeap(true);
-        int[] test = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+        MyHeap h;
+	int[] test = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+
+	h = new MyHeap(true);        
         for (int i : test) {
             h.add(i);
             System.out.println(h);
-        }for (int i : test) {
-            h.remove();
+        }
+
+	h = new MyHeap(false);
+	for (int i : test) {
+            h.add(i);
             System.out.println(h);
         }
     }
