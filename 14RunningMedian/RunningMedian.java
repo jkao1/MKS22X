@@ -3,51 +3,40 @@ public class RunningMedian {
     public MyHeap left, right;
 
     public RunningMedian() {
-	left = new MyHeap(true);
-	right = new MyHeap(false);
-	/* trace code */
+        left = new MyHeap(true);
+        right = new MyHeap(false);
     }
-    
+
     public void add(int v)
     {
-	if (left.size() + right.size() == 0) {
-	    left.add(v);
-	} else if (v * 1.0 > getMedian()) {
-	    right.add(v);
-	} else {
-	    left.add(v);
-	}
-	
-	if (right.size() >= left.size() + 2) {
-	    left.add(right.remove());
-	} else if (left.size() >= right.size() + 2) {
-	    right.add(left.remove());
-	}
+        if (left.size() + right.size() == 0) {
+            left.add(v);
+        } else if (v * 1.0 > getMedian()) {
+            right.add(v);
+        } else {
+            left.add(v);
+        }
+
+        if (right.size() >= left.size() + 2) {
+            left.add(right.remove());
+        } else if (left.size() >= right.size() + 2) {
+            right.add(left.remove());
+        }
     }
 
     public double getMedian()
     {
-	if (left.size() == right.size()) {
-	    return (left.peek() + right.peek()) / 2.0;
-	} else if (left.size() > right.size()) {
-	    return left.peek();
-	}
-	return right.peek();
+        if (left.size() == right.size()) {
+            return (left.peek() + right.peek()) / 2.0;
+        } else if (left.size() > right.size()) {
+            return left.peek();
+        }
+        return right.peek();
     }
 
     public String toString()
     {
-	return left + "\n" + right;
+        return left + "\n" + right;
     }
 
-    public static void main(String[] args)
-    {
-	RunningMedian rm = new RunningMedian();
-	for (int i = 0; i < 10; i++) {
-	    rm.add(i);
-	    System.out.println("-------------------------------");
-	    System.out.println(rm);
-	    System.out.println("median: " + rm.getMedian());
-	    }
-    }
 }

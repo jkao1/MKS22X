@@ -1,6 +1,6 @@
 public class MyHeap {
 
-    private static int O_CONST;
+    private int O_CONST;
 
     private Integer[] ary;
     private int size;
@@ -8,7 +8,7 @@ public class MyHeap {
     public MyHeap() {
         ary = new Integer[10];
         size = 1;
-	O_CONST = 1;
+        O_CONST = 1;
     }
 
     public MyHeap(boolean isMax) {
@@ -95,12 +95,12 @@ public class MyHeap {
 
     public Integer peek()
     {
-	return ary[1];
+        return ary[1];
     }
 
     public int size()
     {
-	return size - 1;
+        return size - 1;
     }
 
     public String toString()
@@ -115,21 +115,4 @@ public class MyHeap {
         return output + "] " + O_CONST;
     }
 
-    public static void main(String[] args)
-    {
-        MyHeap h;
-	int[] test = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-
-	h = new MyHeap(true);        
-        for (int i : test) {
-            h.add(i);
-            System.out.println(h);
-        }
-
-	h = new MyHeap(false);
-	for (int i : test) {
-            h.add(i);
-            System.out.println(h);
-        }
-    }
 }
