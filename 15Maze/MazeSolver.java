@@ -8,8 +8,8 @@ public class MazeSolver {
 
     public static void main(String[] args)
     {
-        MazeSolver ms = new MazeSolver( "A-maze.in" );
-        ms.solve();
+        MazeSolver ms = new MazeSolver( "data2.txt" );
+        ms.solve( Integer.parseInt( args[0] ));
     }
 
     public MazeSolver(String filename)
@@ -29,25 +29,37 @@ public class MazeSolver {
     public void solve(int style)
     {
         Frontier f = null;
-        f = new FrontierPriorityQueue();
+	switch (style) {
+	case 0:
+	    f = new FrontierStack();
+	case 1:
+	    f = new FrontierQueue();
+	case 2:
+	    f = new FrontierPriorityQueue(); // ?
+	case 3:
+	    f = new FrontierPriorityQueue(); // ?
+	}
         f.add( m.getStart() );
 
         while ( f.size() > 0 ) {
+	    System.out.println(m.toString(20));
 
             Location l = f.next();
-            m.set( l.getRow(), l.getCol(), )
+            m.set( l.getRow(), l.getCol(), '.');
+
             int[] hi = { l.getRow(), l.getCol() };
             if (distToGoal(hi) == 0) {
                 System.out.println(l);
                 return;
             }
+
             for ( int[] path : findPaths(l) ) {
                 f.add( new Location( path[0], path[1], l, distToStart(path), distToGoal(path), false) );
+		m.set( path[0], path[1], '?' );
             }
-
-            
-
         }
+
+	
     }
 
     private ArrayList<int[]> findPaths(Location l)
@@ -75,11 +87,8 @@ public class MazeSolver {
 
     private int distToGoal(int[] path)
     {
-        System.out.println(path[0] + ", " + path[1]);
-        System.out.println(m.getEnd());
         int output = Math.abs( path[0] - m.getEnd().getRow() ) +
-            Math.abs( path[1] - m.getEnd().getCol() );
-        System.out.println(output);
+            Math.abs( path[1] - m.getEnd().getCol() );     
         return output;
     }
 }

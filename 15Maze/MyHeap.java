@@ -57,7 +57,7 @@ public class MyHeap {
         return output;
     }
 
-    private void pushDoLown()
+    private void pushDown()
     {
         int tracker = 1;
         while (2 * tracker + 1 < size) {
