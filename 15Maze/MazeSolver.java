@@ -12,6 +12,7 @@ public class MazeSolver {
     {
         MazeSolver ms = new MazeSolver( args[0] );
         ms.solve( Integer.parseInt( args[1] ));
+        System.out.println( ms );
     }
 
     public MazeSolver(String filename)
@@ -53,7 +54,6 @@ public class MazeSolver {
 
             int[] hi = { l.getRow(), l.getCol() };
             if (distToGoal(hi) == 0) {
-                System.out.println(l);
                 break;
             }
 
@@ -77,9 +77,7 @@ public class MazeSolver {
             l = l.previous; // IM SORRY BUT I CAN'T FIND ANOTHER WAY TO DO THIS.
         }
 
-        m.set( l.getRow(), l.getCol(), '@' );
-        System.out.println(m.toString(DELAY));
-
+        m.set( l.getRow(), l.getCol(), '@' ); // For start & end
     }
 
     private ArrayList<int[]> findPaths(Location l)
@@ -110,5 +108,9 @@ public class MazeSolver {
         int output = Math.abs( path[0] - m.getEnd().getRow() ) +
             Math.abs( path[1] - m.getEnd().getCol() );
         return output;
+    }
+
+    public String toString() {
+        return m.toString();
     }
 }
