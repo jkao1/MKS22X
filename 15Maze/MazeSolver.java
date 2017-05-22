@@ -67,17 +67,20 @@ public class MazeSolver {
                                      ));
                 m.set( path[0], path[1], '?' );
             }
-            //System.out.println(m.toString(DELAY));
+            if (animate) {
+                System.out.println(m.toString(DELAY));
+            }
         }
+
+        m.set( l.getRow(), l.getCol(), 'E' );
+        l = l.previous;
 
         while ( l.hasPrevious() ) {
-
             m.set( l.getRow(), l.getCol(), '@' );
-
-            l = l.previous; // IM SORRY BUT I CAN'T FIND ANOTHER WAY TO DO THIS.
+            l = l.previous;
         }
 
-        m.set( l.getRow(), l.getCol(), '@' ); // For start & end
+        m.set( l.getRow(), l.getCol(), 'S' );
     }
 
     private ArrayList<int[]> findPaths(Location l)
