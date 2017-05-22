@@ -3,13 +3,15 @@ import java.io.*;
 
 public class MazeSolver {
 
+    private static int DELAY = 5;
+
     private boolean animate;
     private Maze m;
 
     public static void main(String[] args)
     {
-        MazeSolver ms = new MazeSolver( "data2.txt" );
-        ms.solve( Integer.parseInt( args[0] ));
+        MazeSolver ms = new MazeSolver( args[0] );
+        ms.solve( Integer.parseInt( args[1] ));
     }
 
     public MazeSolver(String filename)
@@ -29,37 +31,55 @@ public class MazeSolver {
     public void solve(int style)
     {
         Frontier f = null;
-	switch (style) {
-	case 0:
-	    f = new FrontierStack();
-	case 1:
-	    f = new FrontierQueue();
-	case 2:
-	    f = new FrontierPriorityQueue(); // ?
-	case 3:
-	    f = new FrontierPriorityQueue(); // ?
-	}
+        if (style == 0) {
+            f = new FrontierStack();
+        }
+        if (style == 1) {
+            f = new FrontierQueue();
+        }
+        if (style == 2) {
+            f = new FrontierPriorityQueue(); // ?
+        }
+        if (style == 3) {
+            f = new FrontierPriorityQueue(); // ?
+        }
         f.add( m.getStart() );
 
+        Location l = null;
         while ( f.size() > 0 ) {
-	    System.out.println(m.toString(20));
 
-            Location l = f.next();
+            l = f.next();
             m.set( l.getRow(), l.getCol(), '.');
 
             int[] hi = { l.getRow(), l.getCol() };
             if (distToGoal(hi) == 0) {
                 System.out.println(l);
-                return;
+                break;
             }
 
             for ( int[] path : findPaths(l) ) {
-                f.add( new Location( path[0], path[1], l, distToStart(path), distToGoal(path), false) );
-		m.set( path[0], path[1], '?' );
+                f.add( new Location( path[0],
+                                     path[1],
+                                     l, // previous
+                                     distToStart(path),
+                                     distToGoal(path),
+                                     style == 3 // astar
+                                     ));
+                m.set( path[0], path[1], '?' );
             }
+            //System.out.println(m.toString(DELAY));
         }
 
-	
+        while ( l.hasPrevious() ) {
+
+            m.set( l.getRow(), l.getCol(), '@' );
+
+            l = l.previous; // IM SORRY BUT I CAN'T FIND ANOTHER WAY TO DO THIS.
+        }
+
+        m.set( l.getRow(), l.getCol(), '@' );
+        System.out.println(m.toString(DELAY));
+
     }
 
     private ArrayList<int[]> findPaths(Location l)
@@ -88,7 +108,7 @@ public class MazeSolver {
     private int distToGoal(int[] path)
     {
         int output = Math.abs( path[0] - m.getEnd().getRow() ) +
-            Math.abs( path[1] - m.getEnd().getCol() );     
+            Math.abs( path[1] - m.getEnd().getCol() );
         return output;
     }
 }

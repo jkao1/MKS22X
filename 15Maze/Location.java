@@ -3,7 +3,7 @@ public class Location implements Comparable<Location> {
     private int row, col;
     private int distToGoal, distToStart;
     private boolean aStar; // if (astar), distToStart + distToGoal. else, distToGoal only
-    private Location previous; // used to trace the solution
+    public Location previous; // used to trace the solution
 
     public Location(int r, int c, Location previous, int distToStart, int distToGoal, boolean aStar)
     {
@@ -29,6 +29,18 @@ public class Location implements Comparable<Location> {
 
     public int getCol() {
         return col;
+    }
+
+    public int getPreviousRow() {
+        return previous.getRow();
+    }
+
+    public int getPreviousCol() {
+        return previous.getCol();
+    }
+
+    public boolean hasPrevious() {
+        return previous != null;
     }
 
     public String toString()
