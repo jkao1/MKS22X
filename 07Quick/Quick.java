@@ -4,7 +4,9 @@ public class Quick {
 
     public static void quicksort(int[] ary)
     {
-        quicksortH(ary, 0, ary.length - 1);
+        if (ary.length > 0) {
+            quicksortH(ary, 0, ary.length - 1);
+        }
     }
 
     public static void quicksortH(int[] ary, int start, int end)

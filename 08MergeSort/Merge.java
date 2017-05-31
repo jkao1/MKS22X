@@ -11,17 +11,15 @@ public class Merge {
                 right[i - left.length] = ary[i];
             }
         }
-        if (ary.length == 1) {
-        } else {
+        if (ary.length > 1) {
             mergesort(left);
             mergesort(right);
-
             merge(left, right, ary);
         }
     }
 
     private static void merge(int[] aryA, int[] aryB, int[] destination)
-    {	
+    {
         int a = 0, b = 0;
         while (a < aryA.length && b < aryB.length) {
             if (aryA[a] < aryB[b]) {
@@ -32,7 +30,7 @@ public class Merge {
                 b++;
             }
         }
-	
+
         for (int i = a; i < aryA.length; i++) {
             destination[i + b] = aryA[i];
         }
