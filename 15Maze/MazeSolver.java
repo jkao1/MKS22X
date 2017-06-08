@@ -8,13 +8,6 @@ public class MazeSolver {
     private boolean animate;
     private Maze m;
 
-    public static void main(String[] args)
-    {
-        MazeSolver ms = new MazeSolver( args[0] );
-        ms.solve( Integer.parseInt( args[1] ));
-        System.out.println( ms );
-    }
-
     public MazeSolver(String filename)
     {
         this( filename, false );
@@ -115,5 +108,9 @@ public class MazeSolver {
 
     public String toString() {
         return m.toString();
+    }
+
+    public String toString(int n) {
+        return m.ToString(n);
     }
 }
